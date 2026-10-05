@@ -83,6 +83,23 @@ Adding it to an existing SearXNG, Unraid, remote access over Tailscale or a reve
 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). **Unraid:** see [docs/UNRAID.md](docs/UNRAID.md). There's a container template, and an optional host agent
 so updates go through Unraid's own template machinery and alerts arrive as Unraid notifications.
 
+## Private engines: keep paid APIs for yourself
+
+API engines such as the Brave Search API (independent index, about 1,000 free searches a month) never get
+CAPTCHA'd, which makes them a great backbone. But anything that calls SearXNG's JSON API, like AI tools,
+scripts or this panel's own probes, would use up the free allowance quickly.
+
+Mark the engine **Private** (Engines → engine → *Private*, or Configure → API engines). SearXNG then only uses
+it for requests carrying a secret **engine token**:
+
+1. The panel generates the token and shows it, with a copy button, at the top of the Engines page.
+2. In each browser you use, open SearXNG → *Preferences → General → Engine tokens*, paste it, *Save*. It's
+   stored in that browser's SearXNG cookie.
+3. Searches from those browsers include the private engine. Requests without the token (API clients,
+   probes, other people on your instance) don't, so they never touch the API.
+
+Details and provider comparison: [docs/API-ENGINES.md](docs/API-ENGINES.md).
+
 ## Documentation
 
 - [Deployment](docs/DEPLOYMENT.md): compose, adding it to an existing SearXNG, Unraid, remote access, updating

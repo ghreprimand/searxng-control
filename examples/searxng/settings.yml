@@ -1,0 +1,103 @@
+# Example SearXNG settings for use with SearXNG Control.
+# Docs: https://docs.searxng.org/admin/settings/index.html
+#
+# Only overrides live here; everything else comes from the image's defaults
+# (use_default_settings), so image updates keep shipping engine fixes.
+#
+# Before first start, replace the two "change-me" values, e.g. with:
+#   openssl rand -hex 32
+
+use_default_settings: true
+
+general:
+  instance_name: "Search"
+  enable_metrics: true
+  open_metrics: "change-me-metrics-password"   # lets SearXNG Control read /metrics (any random string)
+
+server:
+  # base_url: "https://search.example.com/"   # set when serving under a real hostname
+  secret_key: "change-me"
+  limiter: false                # fine for a private instance; enable (with valkey) if public
+  public_instance: false
+  image_proxy: true
+  method: "GET"
+
+ui:
+  default_theme: simple
+  theme_args:
+    simple_style: auto
+  query_in_title: true
+
+search:
+  safe_search: 0
+  autocomplete: "google"
+  favicon_resolver: "duckduckgo"
+  default_lang: "auto"          # region codes like "en-US" silently skip engines without that region
+  formats:                      # json is required by SearXNG Control (probes, tests) and handy for AI tools
+    - html
+    - json
+    - rss
+  # One CAPTCHA/403 suspends an engine for a day by default - harsh for a small instance.
+  suspended_times:
+    SearxEngineAccessDenied: 1800
+    SearxEngineCaptcha: 1800
+    SearxEngineTooManyRequests: 600
+    cf_SearxEngineCaptcha: 3600
+    cf_SearxEngineAccessDenied: 3600
+    recaptcha_SearxEngineCaptcha: 3600
+
+outgoing:
+  request_timeout: 3.0
+  max_request_timeout: 15.0
+
+valkey:
+  url: false
+
+hostnames:
+  remove:
+    - '(.*\.)?pinterest\.[a-z.]+$'
+  low_priority:
+    - '(.*\.)?quora\.com$'
+  high_priority:
+    - '(.*\.)?wikipedia\.org$'
+    - '(.*\.)?github\.com$'
+    - '(.*\.)?stackoverflow\.com$'
+
+# A web-engine mix that worked well from a residential IP in October 2026:
+# two Google-backed, two Bing-backed, one mixed, two independent indexes, so
+# losing any single upstream degrades results instead of breaking them.
+# Blocking changes constantly - use SearXNG Control's Engines/Probes pages to
+# see what works from *your* IP and adjust.
+engines:
+  - name: google cse
+    shortcut: g
+    disabled: false
+  - name: startpage
+    disabled: false
+    inactive: false
+  - name: duckduckgo web
+    shortcut: ddg
+    disabled: false
+  - name: swisscows
+    disabled: false
+    inactive: false
+  - name: dogpile
+    disabled: false
+    inactive: false
+  - name: mojeek
+    disabled: false
+    inactive: false
+  - name: yep
+    disabled: false
+    inactive: false
+    weight: 0.7
+  # Frequently blocked when scraped; still usable via their bang (!br, !go).
+  - name: duckduckgo
+    shortcut: ddgl
+    disabled: true
+  - name: brave
+    disabled: true
+  - name: google
+    disabled: true
+  - name: bing
+    disabled: true

@@ -1,0 +1,45 @@
+# SearXNG + SearXNG Control.
+#
+#   mkdir searxng && cp settings.yml searxng/      # from examples/searxng/settings.yml, then edit the secrets
+#   docker compose up -d
+#
+# SearXNG:          http://localhost:8080
+# SearXNG Control:  http://localhost:8890
+#
+# Both ports are bound to localhost. SearXNG Control can rewrite SearXNG's settings
+# and recreate its container (it has the Docker socket), so only expose it on a
+# private network / VPN, behind a reverse proxy with auth, or set CONTROL_PASSWORD.
+services:
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./searxng:/etc/searxng
+      - searxng-cache:/var/cache/searxng
+
+  searxng-control:
+    image: ghcr.io/ghreprimand/searxng-control:latest
+    container_name: searxng-control
+    restart: unless-stopped
+    depends_on: [searxng]
+    ports:
+      - "127.0.0.1:8890:8890"
+    environment:
+      SEARXNG_URL: http://searxng:8080            # how the panel reaches SearXNG
+      SEARXNG_PUBLIC_URL: http://localhost:8080   # how your browser reaches it (links only)
+      SEARXNG_CONTAINER: searxng                  # container to watch/restart/update
+      SEARXNG_SETTINGS: /searxng/settings.yml     # SearXNG's settings.yml (mounted below)
+      # CONTROL_PASSWORD: change-me               # optional basic auth (user: admin)
+      # INSTANCE_LABEL: homelab
+      # TZ: Europe/Berlin
+    volumes:
+      - ./searxng:/searxng                        # same directory SearXNG uses for /etc/searxng
+      - control-data:/data                        # history, backups
+      - /var/run/docker.sock:/var/run/docker.sock # logs, restarts, updates
+
+volumes:
+  searxng-cache:
+  control-data:

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>searxng-control</Name>
+  <Repository>ghcr.io/ghreprimand/searxng-control:latest</Repository>
+  <Registry>https://github.com/ghreprimand/searxng-control/pkgs/container/searxng-control</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/ghreprimand/searxng-control/issues</Support>
+  <Project>https://github.com/ghreprimand/searxng-control</Project>
+  <Overview>Monitoring and control panel for a self-hosted SearXNG container: engine health and blocking (CAPTCHA/403/429), canary probes, a safe settings.yml editor with diff, backup and automatic rollback, API-engine setup, and upstream update tracking with automatic updates. Needs the Docker socket and SearXNG's appdata folder. Has no login by default - keep it on your LAN/VPN or set CONTROL_PASSWORD.</Overview>
+  <Category>Network:Web Tools: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8890]/</WebUI>
+  <Icon>https://raw.githubusercontent.com/ghreprimand/searxng-control/main/frontend/public/favicon.svg</Icon>
+  <ExtraParams>--restart=unless-stopped</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>A SearXNG container. Its settings.yml must have general.open_metrics set and json in search.formats.</Requires>
+  <Config Name="Web UI port" Target="8890" Default="8890" Mode="tcp" Description="" Type="Port" Display="always" Required="true" Mask="false">8890</Config>
+  <Config Name="SearXNG appdata" Target="/searxng" Default="/mnt/user/appdata/searxng" Mode="rw" Description="Folder that SearXNG mounts as /etc/searxng (contains settings.yml)" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/searxng</Config>
+  <Config Name="Data" Target="/data" Default="/mnt/user/appdata/searxng-control" Mode="rw" Description="History database, settings backups" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/searxng-control</Config>
+  <Config Name="Docker socket" Target="/var/run/docker.sock" Default="/var/run/docker.sock" Mode="rw" Description="Logs, restarts, updates" Type="Path" Display="advanced" Required="true" Mask="false">/var/run/docker.sock</Config>
+  <Config Name="SEARXNG_URL" Target="SEARXNG_URL" Default="http://172.17.0.1:8080" Mode="" Description="How this container reaches SearXNG (172.17.0.1 = the Unraid host from the default bridge)" Type="Variable" Display="always" Required="true" Mask="false">http://172.17.0.1:8080</Config>
+  <Config Name="SEARXNG_PUBLIC_URL" Target="SEARXNG_PUBLIC_URL" Default="" Mode="" Description="SearXNG URL for your browser (links only)" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="SEARXNG_CONTAINER" Target="SEARXNG_CONTAINER" Default="searxng" Mode="" Description="Name of the SearXNG container" Type="Variable" Display="always" Required="true" Mask="false">searxng</Config>
+  <Config Name="SEARXNG_SETTINGS" Target="SEARXNG_SETTINGS" Default="/searxng/settings.yml" Mode="" Description="Path of settings.yml inside this container" Type="Variable" Display="advanced" Required="true" Mask="false">/searxng/settings.yml</Config>
+  <Config Name="UPDATE_METHOD" Target="UPDATE_METHOD" Default="docker" Mode="" Description="docker (built-in), agent (host script, see docs/UNRAID.md) or none" Type="Variable" Display="advanced" Required="false" Mask="false">docker</Config>
+  <Config Name="CONTROL_PASSWORD" Target="CONTROL_PASSWORD" Default="" Mode="" Description="Optional basic-auth password (user: admin)" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="INSTANCE_LABEL" Target="INSTANCE_LABEL" Default="" Mode="" Description="Short label under the logo" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+</Container>

@@ -79,8 +79,18 @@ search:
 
 The Overview page lists anything that's still missing under **Finish setup**.
 
-**Unraid:** see [docs/UNRAID.md](docs/UNRAID.md). There's a container template, and an optional host agent
+Adding it to an existing SearXNG, Unraid, remote access over Tailscale or a reverse proxy:
+[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). **Unraid:** see [docs/UNRAID.md](docs/UNRAID.md). There's a container template, and an optional host agent
 so updates go through Unraid's own template machinery and alerts arrive as Unraid notifications.
+
+## Documentation
+
+- [Deployment](docs/DEPLOYMENT.md): compose, adding it to an existing SearXNG, Unraid, remote access, updating
+- [Configuration](docs/CONFIGURATION.md): every environment variable
+- [API engines](docs/API-ENGINES.md): results that don't get blocked (Brave Search API, Exa, …) and private
+  engines
+- [Browsers](docs/BROWSERS.md): making SearXNG your default search engine on each browser/OS
+- [Architecture](docs/ARCHITECTURE.md) and [HTTP API](docs/API.md)
 
 ## Security
 

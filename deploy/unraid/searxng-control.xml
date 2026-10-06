@@ -12,7 +12,7 @@
   <Overview>Monitoring and control panel for a self-hosted SearXNG container: engine health and blocking (CAPTCHA/403/429), canary probes, a safe settings.yml editor with diff, backup and automatic rollback, API-engine setup, and upstream update tracking with automatic updates. Needs the Docker socket and SearXNG's appdata folder. Has no login by default - keep it on your LAN/VPN or set CONTROL_PASSWORD.</Overview>
   <Category>Network:Web Tools: Tools:</Category>
   <WebUI>http://[IP]:[PORT:8890]/</WebUI>
-  <Icon>https://raw.githubusercontent.com/ghreprimand/searxng-control/main/frontend/public/favicon.svg</Icon>
+  <Icon>https://raw.githubusercontent.com/ghreprimand/searxng-control/main/assets/icon.png</Icon>
   <ExtraParams>--restart=unless-stopped</ExtraParams>
   <PostArgs/>
   <CPUset/>
